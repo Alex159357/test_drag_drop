@@ -13,7 +13,7 @@ class OnWidgetPositionChanged extends DragEvent{
 class OnWidgetClickedDragEvent extends DragEvent{
   final int clickedId;
 
-  OnWidgetClickedDragEvent(this.clickedId);
+  OnWidgetClickedDragEvent({this.clickedId = -1});
 }
 
 class OnAddItemClicked extends DragEvent{

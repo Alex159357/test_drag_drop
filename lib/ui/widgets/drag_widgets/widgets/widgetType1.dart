@@ -75,14 +75,22 @@ class WidgetType1 extends StatelessWidget {
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 500),
               child: state.expandedId == wm.id
-                  ? Container(
-                      width: 300,
-                      height: 400,
-                      color: Colors.greenAccent,
-                    )
+                  ? Column(
+                children: [
+                  Container(
+                    width: 300,
+                    height: 400,
+                    color: Colors.greenAccent,
+                    child: Center(child:   InkWell(
+                      onTap:()=> bloc.add(OnWidgetClickedDragEvent()),
+                      child: Icon(Icons.clear),
+                    ),),
+                  ),
+                ],
+              )
                   : ClipOval(
                       child: InkWell(
-                        onTap: ()=> bloc.add(OnWidgetClickedDragEvent(wm.id)),
+                        onTap: ()=> bloc.add(OnWidgetClickedDragEvent(clickedId: wm.id)),
                         child: Container(
                         width: 100,
                         height: 100,
@@ -203,7 +211,7 @@ class WidgetType1 extends StatelessWidget {
                                           color: Colors.white,
                                         ),
                                         onPressed: () => bloc
-                                            .add(OnWidgetClickedDragEvent(-1))),
+                                            .add(OnWidgetClickedDragEvent())),
                                   )
                                 ],
                               ),
