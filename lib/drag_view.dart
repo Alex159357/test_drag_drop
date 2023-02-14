@@ -30,6 +30,7 @@ class DragViewWidget extends StatelessWidget {
                   },
                   child: Container(color: Colors.red, child: Image.asset("assets/plan_1.png"))),
               _getDragTarget,
+              Positioned(child: ElevatedButton(child: Icon(Icons.add), onPressed: ()=>context.read<DragBloc>().add(OnAddItemClicked(dx: 200, dy: 200)),)),
               for (WidgetModel wm in state.widgetList) DragWrapper(widgetModel: wm,)
             ],
           );
