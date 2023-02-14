@@ -81,11 +81,14 @@ class WidgetType1 extends StatelessWidget {
                       color: Colors.greenAccent,
                     )
                   : ClipOval(
-                      child: Container(
-                      width: 100,
-                      height: 100,
-                      color: Colors.red,
-                    )),
+                      child: InkWell(
+                        onTap: ()=> bloc.add(OnWidgetClickedDragEvent(wm.id)),
+                        child: Container(
+                        width: 100,
+                        height: 100,
+                        color: Colors.red,
+                    ),
+                      )),
             ),
           );
         },
