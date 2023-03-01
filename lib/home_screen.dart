@@ -156,70 +156,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildPage(BuildContext context) {
     DragBloc bloc = context.read<DragBloc>();
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          InkWell(
-            onTap: ()=> _showAddItemDialog().then((value){
-              if(value != null && value is Map){
-                context.read<DragBloc>().add(OnAddItemClicked(dx: double.parse(value["x"]), dy: double.parse(value["y"])));
-              }
-            }),
-            child: Icon(Icons.add),
-          )
-        ],
-      ),
         body: DragViewWidget());
   }
 
 
-  Future<Map<String, dynamic>?> _showAddItemDialog() async {
-    return showDialog<Map<String, dynamic>>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        String x = "0";
-        String y = "0";
-        return AlertDialog(
-          title: const Text("Add item"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('The item will be added to item list'),
-              TextFormField(
-                onChanged: (v){
-                  x = v;
-                },
-                decoration: InputDecoration(
-                  labelText: "X coordinates"
-                ),
-              ),
-              TextFormField(
-                onChanged: (v){
-                  y = v;
-                },
-                decoration: InputDecoration(
-                    labelText: "y coordinates"
-                ),
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Add'),
-              onPressed: () {
-                Navigator.of(context).pop({"x": x, "y": y});
-              },
-            ),
-            ElevatedButton(
-              child: const Text('cancel'),
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-            ),
-          ],
-        );
-      },
-    );
 
-  }
 }

@@ -1,14 +1,21 @@
 import '../../model/widget_model.dart';
+import 'add_widget_state.dart';
 
 class DragState {
   final List<WidgetModel> widgetList;
   final int expandedId;
   final double initialWidth;
   final double initialHeight;
+  final double zoom;
   final double wDef;
   final double hDef;
   final bool holdState;
+  final bool didUpdateScene;
   final bool didItemOverRemoveTarget;
+  final bool dialogState;
+  final AddWidgetState addWidgetState;
+  final int hoverId;
+  final String test;
 
   DragState(
       {this.widgetList = const [],
@@ -16,7 +23,15 @@ class DragState {
       this.initialWidth = 0.0,
       this.initialHeight = 0.0,
       this.wDef = 0.0,
-      this.hDef = 0.0, this.holdState = false, this.didItemOverRemoveTarget = false});
+      this.hDef = 0.0,
+      this.holdState = false,
+      this.didItemOverRemoveTarget = false,
+      this.didUpdateScene = true,
+      this.zoom = 1,
+      this.dialogState = false,
+      this.addWidgetState = const AddWidgetState(),
+      this.hoverId = -1,
+      this.test = ""});
 
   DragState init() {
     return DragState();
@@ -28,7 +43,14 @@ class DragState {
       double? initialWidth,
       double? initialHeight,
       final double? wDef,
-      double? hDef, bool? holdState, bool? didItemOverRemoveTarget}) {
+      double? hDef,
+      bool? holdState,
+      bool? didItemOverRemoveTarget,
+      double? zoom,
+      bool? didUpdateScene,
+      bool? dialogState,
+      AddWidgetState? addWidgetState,
+      int? hoverId, String? test}) {
     return DragState(
         widgetList: widgetList ?? this.widgetList,
         expandedId: expandedId ?? this.expandedId,
@@ -37,7 +59,14 @@ class DragState {
         wDef: wDef ?? this.wDef,
         hDef: hDef ?? this.hDef,
         holdState: holdState ?? this.holdState,
-        didItemOverRemoveTarget: didItemOverRemoveTarget ?? this.didItemOverRemoveTarget
+        didItemOverRemoveTarget:
+            didItemOverRemoveTarget ?? this.didItemOverRemoveTarget,
+        zoom: zoom ?? this.zoom,
+        didUpdateScene: didUpdateScene ?? this.didUpdateScene,
+        dialogState: dialogState ?? this.dialogState,
+        addWidgetState: addWidgetState ?? this.addWidgetState,
+        hoverId: hoverId ?? this.hoverId,
+        test: test ?? this.test
     );
   }
 }

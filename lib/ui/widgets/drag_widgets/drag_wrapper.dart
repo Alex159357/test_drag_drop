@@ -1,10 +1,17 @@
-
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_drag_drop/model/climate_control_model.dart';
+import 'package:test_drag_drop/model/climate_sensor_model.dart';
+import 'package:test_drag_drop/model/switch_model.dart';
 import 'package:test_drag_drop/model/widget_model.dart';
-import 'package:test_drag_drop/ui/widgets/drag_widgets/widgets/widgetType1.dart';
-import 'package:test_drag_drop/ui/widgets/drag_widgets/widgets/widget_type_2.dart';
+import 'package:test_drag_drop/ui/widgets/drag_widgets/widgets/counter_widget.dart';
+import 'package:test_drag_drop/ui/widgets/drag_widgets/widgets/switch_widget.dart';
+import 'package:test_drag_drop/ui/widgets/drag_widgets/widgets/climate_sensor_widget.dart';
+import 'package:test_drag_drop/ui/widgets/drag_widgets/widgets/climate_controlPabel_widget.dart';
+
+import '../../../helpers/states/widget_types.dart';
+import '../../../model/counter_model.dart';
 
 class DragWrapper extends StatelessWidget {
   WidgetModel widgetModel;
@@ -14,22 +21,35 @@ class DragWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedPositioned(
-      curve: Curves.easeInToLinear,
-      duration: Duration(milliseconds: 500),
+        curve: Curves.easeInToLinear,
+        duration: const Duration(milliseconds: 0),
         left: widgetModel.dx,
         top: widgetModel.dy,
-        child: _getChild(widgetModel.type, widgetModel.dx, widgetModel.dy));
+        child: Container(
+            // width: 70,
+            // height: 70,
+            child:
+                _getChild(widgetModel.type, widgetModel.dx, widgetModel.dy)));
   }
 
-  Widget _getChild(int type, double dx, double dy){
-    switch(type){
-      case 0: return WidgetType1(wm: widgetModel, );
-      case 1: return WidgetType2();
-      case 2: return WidgetType1(wm: widgetModel,);
-      case 3: return WidgetType2();
-      case 4: return WidgetType1(wm: widgetModel,);
-      default: return Container();
+  Widget _getChild(WidgetTypes type, double dx, double dy) {
+    switch (type) {
+      case WidgetTypes.SWITCH:
+        return SwitchWidget(switchModel: widgetModel as SwitchModel);
+      case WidgetTypes.CLIMATE_CONTROL_PANEL:
+        return ClimateControlPaneWidget(
+          wm: widgetModel as ClimateControlModel,
+        );
+      case WidgetTypes.CLIMATE_SENSOR:
+        return ClimateSensor(
+          wm: widgetModel as ClimateSensorModel,
+        );
+      case WidgetTypes.COUNTER:
+        return CounterWidget(
+          wm: widgetModel as CounterModel,
+        );
+      default:
+        return Container();
     }
   }
-
 }

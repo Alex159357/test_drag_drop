@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_drag_drop/ui/theme/app_theme_light.dart';
 
 import 'bloc/drag/drag_bloc.dart';
 import 'home_screen.dart';
@@ -17,9 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: AppThemeLight().theme,
       home: HomeScreen()
     );
   }
