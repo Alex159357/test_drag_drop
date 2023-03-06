@@ -47,74 +47,69 @@ class ClimateSensor extends StatelessWidget {
             },
             data: wm.id,
             feedback: AnimatedOpacity(
-              duration: Duration(milliseconds: 500),
-              opacity: state.didItemOverRemoveTarget ? 0.4 : 1,
-              child: state.expandedId == wm.id
-                  ? ExpandedWidget(widgetModel: wm, bloc: bloc,)
-                  : SizedBox(
-                width: widgetSize,
-                height: widgetSize,
-                child: const Material(
-                  color: Colors.transparent,
-                ),
-              ),
-            ),
-            child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 500),
-              child: state.expandedId == wm.id
-                  ? Column(
+              opacity: state.didItemOverRemoveTarget ? 0.4 : 1,
+              // child: state.expandedId == wm.id
+              //     ? ExpandedWidget(widgetModel: wm, bloc: bloc,)
+              //     : SizedBox(
+              //   width: widgetSize,
+              //   height: widgetSize,
+              //   child: const Material(
+              //     color: Colors.transparent,
+              //   ),
+              // ),
+            ),
+            child: state.expandedId == wm.id
+                ? Column(
+              children: [
+                // ExpandedWidget(widgetModel: wm, bloc: bloc,),
+              ],
+            )
+                : MouseRegion(
+              onHover: (b) {
+                if(!state.holdState) {
+                  // bloc.add(OnHoverWidget(wm.id));
+                }
+              },
+              child: Column(
                 children: [
-                  ExpandedWidget(widgetModel: wm, bloc: bloc,),
-                ],
-              )
-                  : MouseRegion(
-                onHover: (b) {
-                  // if(!state.holdState) {
-                  //   bloc.add(OnHoverWidget(switchModel.id));
-                  // }
-                },
-                child: Column(
-                  children: [
-                    Container(
-                      width: widgetSize,
-                      height: widgetSize,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                              color: Colors.white, width: 2),
-                          color: const Color(0xFFff98ff)
-                              .withOpacity(.8)),
-                      child: InkWell(
-                        onTap: () => bloc.add(
-                            OnWidgetClickedDragEvent(
-                                clickedId: wm.id)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: Text(
-                              wm.name,
-                              style: TextStyle(color: Colors.white, fontSize: 12),
-                            ),
+                  Container(
+                    width: widgetSize,
+                    height: widgetSize,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                            color: Colors.white, width: 2),
+                        color: const Color(0xFFff98ff)
+                            .withOpacity(.8)),
+                    child: InkWell(
+                      onTap: () => bloc.add(OnWidgetClickedDragEvent(clickedId: wm.id)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Text(
+                            wm.name,
+                            style: const TextStyle(color: Colors.white, fontSize: 12),
                           ),
                         ),
                       ),
                     ),
-                    state.hoverId == wm.id
-                        ? Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 16),
-                      color: Colors.black12,
-                      child: Column(
-                        children: [
-                          Text(wm.name),
-                          Text(wm.tag),
-                          Text(wm.type.getTitle),
-                        ],
-                      ),
-                    )
-                        : Container()
-                  ],
-                ),
+                  ),
+                  state.hoverId == wm.id
+                      ? Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8, horizontal: 16),
+                    color: Colors.black12,
+                    child: Column(
+                      children: [
+                        Text(wm.name),
+                        Text(wm.tag),
+                        Text(wm.type.getTitle),
+                      ],
+                    ),
+                  )
+                      : Container()
+                ],
               ),
             ),
           );

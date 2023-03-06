@@ -49,9 +49,11 @@ class CounterWidget extends StatelessWidget {
                 feedback: AnimatedOpacity(
                   duration: Duration(milliseconds: 500),
                   opacity: state.didItemOverRemoveTarget ? 0.4 : 1,
-                  child: state.expandedId == wm.id
-                      ? ExpandedWidget(widgetModel: wm, bloc: bloc,)
-                      : SizedBox(
+                  child:
+                  // state.expandedId == wm.id
+                  //     ? ExpandedWidget(widgetModel: wm, bloc: bloc,)
+                  //     :
+                  SizedBox(
                           width: widgetSize,
                           height: widgetSize,
                           child: const Material(
@@ -64,7 +66,7 @@ class CounterWidget extends StatelessWidget {
                   child: state.expandedId == wm.id
                       ? Column(
                           children: [
-                            ExpandedWidget(widgetModel: wm, bloc: bloc,),
+                            // ExpandedWidget(widgetModel: wm, bloc: bloc,),
                           ],
                         )
                       : MouseRegion(

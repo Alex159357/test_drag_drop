@@ -54,24 +54,6 @@ class SwitchWidget extends BaseStateLess {
             },
             data: switchModel.id,
             feedback:
-                // state.expandedId == switchModel.id
-                //     ? Container(
-                //         child: Container(
-                //           color: Colors.grey.withOpacity(.5),
-                //           width: expandedWidgetWidth,
-                //           height: expandedWidgetHeight,
-                //           child: Column(
-                //             children: [
-                //               Container(
-                //                 height: 54,
-                //                 width: double.infinity,
-                //                 color: Colors.grey.withOpacity(.8),
-                //               ),
-                //             ],
-                //           ),
-                //         ),
-                //       )
-                //     :
                 SizedBox(
               width: widgetSize,
               height: widgetSize,
@@ -79,67 +61,57 @@ class SwitchWidget extends BaseStateLess {
                 color: Colors.transparent,
               ),
             ),
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 500),
-              child:
-              // state.expandedId == switchModel.id
-              //     ? ExpandedWidget(
-              //         widgetModel: switchModel,
-              //         bloc: bloc,
-              //       )
-              //     :
-              MouseRegion(
-                      onHover: (b) {
-                        // if(!state.holdState) {
-                        //   bloc.add(OnHoverWidget(switchModel.id));
-                        // }
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            width: widgetSize,
-                            height: widgetSize,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border:
-                                    Border.all(color: Colors.white, width: 2),
-                                color: Colors.brown.withOpacity(.5)),
-                            child:
-                            InkWell(
-                              onTap: () {
-                                bloc.add(OnWidgetClickedDragEvent(clickedId: switchModel.id));
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(18.0),
-                                child: CupertinoSwitch(
-                                  trackColor: Colors.black12,
-                                  value: switchModel.status ?? false,
-                                  onChanged: (bool value) {
-                                    bloc.add(OnSwitchStateChanged(
-                                        id: switchModel.id, state: value));
-                                  },
-                                ),
+            child: MouseRegion(
+                    onHover: (b) {
+                      // if(!state.holdState) {
+                      //   bloc.add(OnHoverWidget(switchModel.id));
+                      // }
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          width: widgetSize,
+                          height: widgetSize,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border:
+                                  Border.all(color: Colors.white, width: 2),
+                              color: Colors.brown.withOpacity(.5)),
+                          child:
+                          InkWell(
+                            onTap: () {
+                              bloc.add(OnWidgetClickedDragEvent(clickedId: switchModel.id));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(18.0),
+                              child: CupertinoSwitch(
+                                trackColor: Colors.black12,
+                                value: switchModel.status ?? false,
+                                onChanged: (bool value) {
+                                  bloc.add(OnSwitchStateChanged(
+                                      id: switchModel.id, state: value));
+                                },
                               ),
                             ),
                           ),
-                          state.hoverId == switchModel.id
-                              ? Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 8, horizontal: 16),
-                                  color: Colors.black12,
-                                  child: Column(
-                                    children: [
-                                      Text(switchModel.name),
-                                      Text(switchModel.tag),
-                                      Text(switchModel.type.getTitle),
-                                    ],
-                                  ),
-                                )
-                              : Container()
-                        ],
-                      ),
+                        ),
+                        state.hoverId == switchModel.id
+                            ? Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 16),
+                                color: Colors.black12,
+                                child: Column(
+                                  children: [
+                                    Text(switchModel.name),
+                                    Text(switchModel.tag),
+                                    Text(switchModel.type.getTitle),
+                                  ],
+                                ),
+                              )
+                            : Container()
+                      ],
                     ),
-            ),
+                  ),
           );
         },
       );
