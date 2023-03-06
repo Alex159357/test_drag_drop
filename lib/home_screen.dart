@@ -32,14 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<DragBloc>(
-          create: (BuildContext context) => DragBloc()..add(InitEvent()),
-        ),
-      ],
-      child: Builder(builder: (context) => _buildPage(context)),
-    );
+    context.read<DragBloc>().add(InitEvent());
+    return Builder(builder: (context) => _buildPage(context));
 
     return Scaffold(
       body: Container(

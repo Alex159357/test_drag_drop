@@ -15,11 +15,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: AppThemeLight().theme,
-      home: HomeScreen()
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<DragBloc>(
+          create: (BuildContext context) => DragBloc(),
+        ),
+      ],
+      child: Builder(builder: (context) => MaterialApp(
+          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          theme: AppThemeLight().theme,
+          home: HomeScreen()
+      )),
     );
   }
 }
