@@ -82,47 +82,41 @@ class DragViewWidget extends BaseStateLess with AddWidgetDialog {
                             maxWidth: MediaQuery.of(context).size.width,
                             maxHeight: MediaQuery.of(context).size.height,
                             minHeight: MediaQuery.of(context).size.height),
-                        child: SingleChildScrollView(
+                        child: Container(
                           child: Column(
                             children: [
                               Row(
                                 children: [
-                                  Container(
-                                      child: ElevatedButton(
+                                  ElevatedButton(
                                     child: Icon(Icons.zoom_in),
                                     onPressed: () => bloc.add(OnZoomIn()),
-                                  )),
-                                  Container(
-                                      child: ElevatedButton(
+                                  ),
+                                  ElevatedButton(
                                     child: Icon(Icons.zoom_out),
                                     onPressed: () => bloc.add(OnZoomOut()),
-                                  )),
+                                  ),
                                 ],
                               ),
                               Container(
                                 margin: EdgeInsets.only(bottom: 100),
-                                child: Container(
-                                  child: Container(
-                                    child: Stack(
-                                      children: [
-                                        WidgetSizeOffsetWrapper(
-                                            onSizeChange: (Size size) {
-                                              bloc.add(InitSize(
-                                                  width: size.width,
-                                                  height: size.height));
-                                            },
-                                            child: Container(
-                                                color: Colors.red,
-                                                child: Image.asset(
-                                                    "assets/plan_1.png"))),
-                                        _getDragTarget,
-                                        for (WidgetModel wm in state.widgetList)
-                                          DragWrapper(
-                                            widgetModel: wm,
-                                          )
-                                      ],
-                                    ),
-                                  ),
+                                child: Stack(
+                                  children: [
+                                    WidgetSizeOffsetWrapper(
+                                        onSizeChange: (Size size) {
+                                          bloc.add(InitSize(
+                                              width: size.width,
+                                              height: size.height));
+                                        },
+                                        child: Container(
+                                            color: Colors.red,
+                                            child: Image.asset(
+                                                "assets/plan_1.png"))),
+                                    _getDragTarget,
+                                    for (WidgetModel wm in state.widgetList)
+                                      DragWrapper(
+                                        widgetModel: wm,
+                                      )
+                                  ],
                                 ),
                               ),
                               Positioned(

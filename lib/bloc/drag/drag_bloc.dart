@@ -138,22 +138,22 @@ class DragBloc extends Bloc<DragEvent, DragState> {
 
   FutureOr<void> _onAddWidgetBtnPressed(OnAddWidgetBtnPressed event, Emitter<DragState> emit) {
     WidgetTypes widgetTypes = WidgetTypes.values.firstWhere((element) => element.getTitle == state.addWidgetState.widgetType);
-    // switch(widgetTypes){
-    //   case WidgetTypes.SWITCH:
-    //     _widgetList.add(SwitchModel(id: _widgetList.length+1, name: state.addWidgetState.name, dx: 100, dy: 100, type: widgetTypes, state: false, tag: state.addWidgetState.widgetTag));
-    //     break;
-    //   case WidgetTypes.COUNTER:
-    //     _widgetList.add(CounterModel(id: _widgetList.length+1, name: state.addWidgetState.name, dx: 100, dy: 100, type: widgetTypes, tag: state.addWidgetState.widgetTag, value: "0"));
-    //     break;
-    //   case WidgetTypes.CLIMATE_SENSOR:
-    //     _widgetList.add(ClimateSensorModel(id: _widgetList.length+1, name: state.addWidgetState.name, dx: 100, dy: 100, type: widgetTypes, tag: state.addWidgetState.widgetTag, temperature: '0', humidity: '0', cO2: '0'));
-    //     break;
-    //   case WidgetTypes.CLIMATE_CONTROL_PANEL:
-    //     _widgetList.add(ClimateControlModel(id: _widgetList.length+1, name: state.addWidgetState.name, dx: 100, dy: 100, type: widgetTypes, tag: state.addWidgetState.widgetTag));
-    //     break;
-    //   case WidgetTypes.UNDEFINED:
-    //     break;
-    // }
+    switch(widgetTypes){
+      case WidgetTypes.SWITCH:
+        _widgetList.add(SwitchModel(id: _widgetList.length+1, name: state.addWidgetState.name, dx: 100, dy: 100, type: widgetTypes, state: false, tag: state.addWidgetState.widgetTag, objectName: '', vPower: null, swver: '', status: false, rssi: null, hubId: ''));
+        break;
+      case WidgetTypes.COUNTER:
+        _widgetList.add(CounterModel(id: _widgetList.length+1, name: state.addWidgetState.name, dx: 100, dy: 100, type: widgetTypes, tag: state.addWidgetState.widgetTag, value: "0",  objectName: '', vPower: null, swver: '', status: false, rssi: null, hubId: ''));
+        break;
+      case WidgetTypes.CLIMATE_SENSOR:
+        _widgetList.add(ClimateSensorModel(id: _widgetList.length+1, name: state.addWidgetState.name, dx: 100, dy: 100, type: widgetTypes, tag: state.addWidgetState.widgetTag, temperature: '0', humidity: '0', cO2: '0',  objectName: '', vPower: null, swver: '', status: false, rssi: null, hubId: ''));
+        break;
+      case WidgetTypes.CLIMATE_CONTROL_PANEL:
+        _widgetList.add(ClimateControlModel(id: _widgetList.length+1, name: state.addWidgetState.name, dx: 100, dy: 100, type: widgetTypes, tag: state.addWidgetState.widgetTag,  objectName: '', vPower: null, swver: '', status: false, rssi: null, hubId: ''));
+        break;
+      case WidgetTypes.UNDEFINED:
+        break;
+    }
     emit(state.clone(addWidgetState: state.addWidgetState.clone(), dialogState: !state.dialogState));
   }
 
