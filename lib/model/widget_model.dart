@@ -16,11 +16,11 @@ abstract class WidgetModel {
   late double? vPower;
   late String? swver;
 
-
   void changeCoordinates({required double dx, required double dy}) {
     this.dx = dx;
     this.dy = dy;
   }
 
+  WidgetModel? fromMap(Map<String, dynamic> json);
 
 }

@@ -166,12 +166,16 @@ class DragBloc extends Bloc<DragEvent, DragState> {
   }
 
   FutureOr<void> _onSwitchStateChanged(OnSwitchStateChanged event, Emitter<DragState> emit) {
+    SwitchModel? sm;
     _widgetList.forEach((element) {
       if(element.id == event.id){
-        SwitchModel sm = element as SwitchModel;
-        sm.status = event.state;
+        sm = element as SwitchModel;
+        sm!.status = event.state;
       }
     });
+    if(sm != null) {
+      _mainRepoImpl.passAction(hubid: sm!.hubId!, id: sm!.id, state: event.state);
+    }
     emit(state.clone(widgetList: _widgetList));
   }
 

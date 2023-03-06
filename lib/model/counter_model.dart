@@ -22,7 +22,6 @@ class CounterModel implements WidgetModel {
 
   String value;
 
-
   @override
   String? hubId;
 
@@ -41,21 +40,21 @@ class CounterModel implements WidgetModel {
   @override
   double? vPower;
 
-  CounterModel(
-      {required this.dx,
-      required this.dy,
-      required this.id,
-      required this.name,
-      required this.tag,
-      required this.type,
-      required this.value,
-        required this.vPower,
-        required this.swver,
-        required this.status,
-        required this.rssi,
-        required this.hubId,
-        required this.objectName,
-      });
+  CounterModel({
+    required this.dx,
+    required this.dy,
+    required this.id,
+    required this.name,
+    required this.tag,
+    required this.type,
+    required this.value,
+    required this.vPower,
+    required this.swver,
+    required this.status,
+    required this.rssi,
+    required this.hubId,
+    required this.objectName,
+  });
 
   @override
   void changeCoordinates({required double dx, required double dy}) {
@@ -63,4 +62,22 @@ class CounterModel implements WidgetModel {
     this.dy = dy;
   }
 
+  factory CounterModel.fromMap(Map<String, dynamic> map) =>CounterModel(
+    id: int.parse(map["id"].toString()),
+    name: map["name"],
+    dx: 0,
+    dy: 0,
+    type: WidgetTypes.COUNTER,
+    tag: "",
+    objectName: map["object_name"],
+    vPower: double.tryParse(map["vpower"]),
+    swver: map["swver"],
+    status: false,
+    rssi: int.tryParse(map["rssi"]),
+    hubId: map["rssi"].toString(),
+    value: '',
+  );
+
+  @override
+  WidgetModel fromMap(Map<String, dynamic> map) => CounterModel.fromMap(map);
 }

@@ -3,7 +3,6 @@ import 'package:test_drag_drop/helpers/states/widget_types.dart';
 import 'package:test_drag_drop/model/widget_model.dart';
 import 'package:collection/collection.dart';
 
-@immutable
 class SwitchModel implements WidgetModel {
   @override
   int id;
@@ -89,4 +88,7 @@ class SwitchModel implements WidgetModel {
         rssi: int.tryParse(map["rssi"]),
         hubId: map["rssi"].toString(),
       );
+
+  @override
+  WidgetModel? fromMap(Map<String, dynamic> json)=> SwitchModel.fromMap(json);
 }

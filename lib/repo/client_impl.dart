@@ -10,7 +10,7 @@ class ClientImpl<T, E> extends RequestInterceptor<T, E> implements Client<T, E> 
   Dio? _dio;
 
   ClientImpl(this.specialKey) {
-    spesialKey = this.specialKey;
+    specialKey = this.specialKey;
     _dio = Dio()..interceptors.add(this);
   }
 
@@ -20,7 +20,7 @@ class ClientImpl<T, E> extends RequestInterceptor<T, E> implements Client<T, E> 
       {required Map<String, dynamic> data,
       required ApiValues apiValues}) async {
     Response response = await _dio!.post(apiValues.getUrl, data: data);
-    return response.data;
+    return response.data as E;
   }
 
   @override

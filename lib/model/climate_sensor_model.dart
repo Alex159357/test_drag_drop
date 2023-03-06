@@ -68,5 +68,22 @@ class ClimateSensorModel implements WidgetModel {
     this.dy = dy;
   }
 
+  @override
+  WidgetModel? fromMap(Map<String, dynamic> json) => null;
+
+  factory ClimateSensorModel.fromMap(Map<String, dynamic> map) =>ClimateSensorModel(
+    id: int.parse(map["id"].toString()),
+    name: map["name"],
+    dx: 0,
+    dy: 0,
+    type: WidgetTypes.CLIMATE_SENSOR,
+    tag: "",
+    objectName: map["object_name"],
+    vPower: double.tryParse(map["vpower"]),
+    swver: map["swver"],
+    status: false,
+    rssi: int.tryParse(map["rssi"]),
+    hubId: map["rssi"].toString(), temperature: 'temp', humidity: 'humidity', cO2: 'cO2',
+  );
 
 }

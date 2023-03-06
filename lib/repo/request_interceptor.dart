@@ -1,17 +1,18 @@
-
-
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:test_drag_drop/model/widget_model.dart';
 
 import '../helpers/main_mapper.dart';
+import '../helpers/states/widget_types.dart';
+import '../model/action_response.dart';
 import '../model/switch_model.dart';
 
 
-class RequestInterceptor<T, E> extends Interceptor with MainMapper<T>{
+class RequestInterceptor<T, E> extends Interceptor with MainMapper<T, E> {
 
-  String spesialKey = "";
+  String specialKey = "";
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
@@ -24,24 +25,16 @@ class RequestInterceptor<T, E> extends Interceptor with MainMapper<T>{
     super.onRequest(options, handler);
   }
 
+
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-
-    if(spesialKey.isNotEmpty){
-      var map = json.decode(response.data.toString())[spesialKey];
-      if(map is List){
-        List<T> convertedList = [];
-        for (var e in map) {
-          if(e["status"] != null){
-            convertedList.add(SwitchModel.fromMap(e) as T);
-          }
-        }
-        response.data = convertedList;
+    try{
+      response.data = mapData(data: response.data, specialKey: specialKey);
+    }catch(e){
+      if (kDebugMode) {
+        print("MapperError -> $e");
       }
-    }else{
-
     }
-
     super.onResponse(response, handler);
   }
 
@@ -50,8 +43,6 @@ class RequestInterceptor<T, E> extends Interceptor with MainMapper<T>{
     // TODO: implement onError
     super.onError(err, handler);
   }
-
-
 
 
 }
