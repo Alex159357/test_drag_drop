@@ -83,7 +83,7 @@ class DragViewWidget extends BaseStateLess with AddWidgetDialog {
                             maxHeight: MediaQuery.of(context).size.height,
                             minHeight: MediaQuery.of(context).size.height),
                         child: Container(
-                          child: Column(
+                          child: Stack(
                             children: [
                               Row(
                                 children: [
