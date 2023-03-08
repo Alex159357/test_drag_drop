@@ -3,6 +3,7 @@ class AddWidgetDialog{
   static const String cancelTitle = "Відмінити";
   static const String nameHintTitle = "Вкажіть імья пристрою";
   static const String deviceType = "Тип пристрою";
+  static const String deviceHub = "Хаб пристрою";
   static const String dialogTitle = "Тайтл діалогу";
 }
 

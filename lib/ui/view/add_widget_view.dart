@@ -145,7 +145,7 @@ class AddWidgetView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  AddWidgetDialog.deviceType,
+                  AddWidgetDialog.deviceHub,
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
                 Container(
