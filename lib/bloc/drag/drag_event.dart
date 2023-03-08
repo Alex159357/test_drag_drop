@@ -98,3 +98,9 @@ class OnHoverWidget extends DragEvent{
 
   OnHoverWidget(this.hoveredId);
 }
+
+class OnHubChanged extends DragEvent{
+  final String id;
+
+  OnHubChanged(this.id);
+}

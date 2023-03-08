@@ -7,6 +7,7 @@ import 'package:test_drag_drop/model/counter_model.dart';
 import 'package:test_drag_drop/model/widget_model.dart';
 
 import '../model/action_response.dart';
+import '../model/hub_id_model.dart';
 import '../model/switch_model.dart';
 
 class MainMapper<T, E> {
@@ -17,29 +18,35 @@ class MainMapper<T, E> {
       if (map is List) {
         List<T> convertedList = [];
         for (var e in map) {
-          T? res = mapWidgetModel(e);
+          T? res = _mapToList(e);
           if(res != null) {
             convertedList.add(res);
+          }else{
+            var mapped = _mapDataModels(e);
+            print("$mapped");
+            if(mapped != null) {
+              convertedList.add(mapped);
+            }
           }
         }
         data = convertedList;
       }
     } else {
       if (data != null) {
-        return mapToModel(json.decode(data.toString()));
+        return _mapToModel(json.decode(data.toString()));
       }
     }
     return data;
   }
 
-  T? mapToModel(Map<String, dynamic> map) {
+  T? _mapToModel(Map<String, dynamic> map) {
     if (T == ActionResponse) {
       return ActionResponse.fromMap(map) as T;
     }
     return null;
   }
 
-  T? mapWidgetModel(Map<String, dynamic> map) {
+  T? _mapToList(Map<String, dynamic> map) {
     final widgetType = _getWidgetTypeById(map["id"]);
     if (widgetType != null) {
       switch (widgetType) {
@@ -82,4 +89,12 @@ class MainMapper<T, E> {
       return null;
     }
   }
+
+  T? _mapDataModels(Map<String, dynamic> map){
+    switch(T){
+      case HubIdModel: return HubIdModel.fromMap(map) as T;
+    }
+
+  }
+
 }

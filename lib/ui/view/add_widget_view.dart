@@ -6,6 +6,7 @@ import 'package:collection/collection.dart';
 import '../../bloc/drag/drag_event.dart';
 import '../../bloc/drag/drag_state.dart';
 import '../../helpers/constaints.dart';
+import '../../model/hub_id_model.dart';
 
 class AddWidgetView extends StatelessWidget {
   late DragBloc bloc;
@@ -28,7 +29,7 @@ class AddWidgetView extends StatelessWidget {
         ],
       ),
       width: 400,
-      height: 400,
+      height: 450,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -49,6 +50,8 @@ class AddWidgetView extends StatelessWidget {
           _getNameField,
           const Divider(),
           _getTypeSelect,
+          const Divider(),
+          _getHubSelect,
           const Divider(),
           _getTagField,
           const Spacer(),
@@ -121,6 +124,53 @@ class AddWidgetView extends StatelessWidget {
                         value: value,
                         child: Text(
                           value.getTitle,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+
+  Widget get _getHubSelect => BlocBuilder<DragBloc, DragState>(
+        builder: (BuildContext context, state) {
+          HubIdModel widgetTypes = state.hubList.firstWhereOrNull((element) => element.id == state.selectedHubModel) ?? state.hubList[0];
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  AddWidgetDialog.deviceType,
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: Colors.grey.withOpacity(.3)
+                  ),
+                  child: DropdownButton<HubIdModel>(
+                    value: widgetTypes,
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    elevation: 16,
+                    underline: Container(
+                      color: Colors.transparent,
+                    ),
+                    onChanged: (HubIdModel? value) {
+                      bloc.add(OnHubChanged(value!.id));
+                    },
+                    items: state.hubList
+                        .map<DropdownMenuItem<HubIdModel>>(
+                            (HubIdModel value) {
+                      return DropdownMenuItem<HubIdModel>(
+                        value: value,
+                        child: Text(
+                          value.objectName,
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
                       );

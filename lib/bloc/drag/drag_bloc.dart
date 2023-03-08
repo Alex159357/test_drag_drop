@@ -39,12 +39,15 @@ class DragBloc extends Bloc<DragEvent, DragState> {
     on<OnTagNameChanged>(_onTagNameChanged);
     on<OnSwitchStateChanged>(_onSwitchStateChanged);
     on<OnHoverWidget>(_onHover);
+    on<OnHubChanged>(_onHubChanged);
   }
 
   void _init(InitEvent event, Emitter<DragState> emit) async {
     var response = await _mainRepoImpl.getDeviceList({});
+    var habs = await _mainRepoImpl.loadHubs();
+    print("${habs!.length}");
     _widgetList.addAll(response as List<WidgetModel>);
-    emit(state.clone(addWidgetState: state.addWidgetState.clone(), widgetList: _widgetList));
+    emit(state.clone(addWidgetState: state.addWidgetState.clone(), widgetList: _widgetList, hubList: habs ));
   }
 
   FutureOr<void> _onWidgetPositionChanged(
@@ -140,16 +143,16 @@ class DragBloc extends Bloc<DragEvent, DragState> {
     WidgetTypes widgetTypes = WidgetTypes.values.firstWhere((element) => element.getTitle == state.addWidgetState.widgetType);
     switch(widgetTypes){
       case WidgetTypes.SWITCH:
-        _widgetList.add(SwitchModel(id: _widgetList.length+1, name: state.addWidgetState.name, dx: 100, dy: 100, type: widgetTypes, state: false, tag: state.addWidgetState.widgetTag, objectName: '', vPower: null, swver: '', status: false, rssi: null, hubId: ''));
+        _widgetList.add(SwitchModel(id: _widgetList.length+1, name: state.addWidgetState.name, dx: 100, dy: 100, type: widgetTypes, state: false, tag: state.addWidgetState.widgetTag, objectName: '', vPower: null, swver: '', status: false, rssi: null, hubId: state.selectedHubModel));
         break;
       case WidgetTypes.COUNTER:
-        _widgetList.add(CounterModel(id: _widgetList.length+1, name: state.addWidgetState.name, dx: 100, dy: 100, type: widgetTypes, tag: state.addWidgetState.widgetTag, value: "0",  objectName: '', vPower: null, swver: '', status: false, rssi: null, hubId: ''));
+        _widgetList.add(CounterModel(id: _widgetList.length+1, name: state.addWidgetState.name, dx: 100, dy: 100, type: widgetTypes, tag: state.addWidgetState.widgetTag, value: "0",  objectName: '', vPower: null, swver: '', status: false, rssi: null, hubId: state.selectedHubModel));
         break;
       case WidgetTypes.CLIMATE_SENSOR:
-        _widgetList.add(ClimateSensorModel(id: _widgetList.length+1, name: state.addWidgetState.name, dx: 100, dy: 100, type: widgetTypes, tag: state.addWidgetState.widgetTag, temperature: '0', humidity: '0', cO2: '0',  objectName: '', vPower: null, swver: '', status: false, rssi: null, hubId: ''));
+        _widgetList.add(ClimateSensorModel(id: _widgetList.length+1, name: state.addWidgetState.name, dx: 100, dy: 100, type: widgetTypes, tag: state.addWidgetState.widgetTag, temperature: '0', humidity: '0', cO2: '0',  objectName: '', vPower: null, swver: '', status: false, rssi: null, hubId: state.selectedHubModel));
         break;
       case WidgetTypes.CLIMATE_CONTROL_PANEL:
-        _widgetList.add(ClimateControlModel(id: _widgetList.length+1, name: state.addWidgetState.name, dx: 100, dy: 100, type: widgetTypes, tag: state.addWidgetState.widgetTag,  objectName: '', vPower: null, swver: '', status: false, rssi: null, hubId: ''));
+        _widgetList.add(ClimateControlModel(id: _widgetList.length+1, name: state.addWidgetState.name, dx: 100, dy: 100, type: widgetTypes, tag: state.addWidgetState.widgetTag,  objectName: '', vPower: null, swver: '', status: false, rssi: null, hubId: state.selectedHubModel));
         break;
       case WidgetTypes.UNDEFINED:
         break;
@@ -181,5 +184,9 @@ class DragBloc extends Bloc<DragEvent, DragState> {
 
   FutureOr<void> _onHover(OnHoverWidget event, Emitter<DragState> emit) {
     emit(state.clone(hoverId: event.hoveredId));
+  }
+
+  FutureOr<void> _onHubChanged(OnHubChanged event, Emitter<DragState> emit) {
+    emit(state.clone(selectedHubModel: event.id) );
   }
 }

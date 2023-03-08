@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:test_drag_drop/helpers/main_mapper.dart';
 import 'package:test_drag_drop/helpers/states/api_values.dart';
+import 'package:test_drag_drop/model/hub_id_model.dart';
 import 'package:test_drag_drop/repo/client_impl.dart';
 
 import '../helpers/constaints.dart' as lnk;
@@ -19,15 +20,11 @@ class MainRepoImpl implements MainRepo{
   @override
   Future<List<WidgetModel>?> getDeviceList(Map<String, dynamic> req) async {
     Client client = ClientImpl<WidgetModel, List<WidgetModel>>("result");
-
     var res = await client.callPost(data: {
       "object_id": "1",
       "token": "99d10fe4-1b2e-4a75-87a3-aa6c2c2d08dd"
     }, apiValues: ApiValues.DEVICE_LIST);
-
-
     return res;
-
   }
 
   @override
@@ -44,6 +41,16 @@ class MainRepoImpl implements MainRepo{
       print("ActionResult -> ${actionResponse.status}");
     }
     return false;
+  }
+
+  @override
+  Future<List<HubIdModel>?> loadHubs() async {
+    var req = {
+      "token": "99d10fe4-1b2e-4a75-87a3-aa6c2c2d08dd",
+      "object_id": "1"
+    };
+    Client client = ClientImpl<HubIdModel, List<HubIdModel>>("hubs");
+    return await client.callPost(data: req, apiValues: ApiValues.HUB_LIST);
   }
 
 }

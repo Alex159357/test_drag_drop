@@ -1,7 +1,7 @@
 
 
 enum ApiValues{
-  DEVICE_LIST, DEVICE_ACTION
+  DEVICE_LIST, DEVICE_ACTION, HUB_LIST
 }
 
 extension Api on ApiValues{
@@ -12,6 +12,8 @@ extension Api on ApiValues{
         return "show_modules_by_object";
       case ApiValues.DEVICE_ACTION:
         return "sendcommand";
+      case ApiValues.HUB_LIST:
+        return "show_hubs";
     }
   }
 
