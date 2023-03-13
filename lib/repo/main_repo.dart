@@ -14,7 +14,7 @@ abstract class MainRepo {
 
   Future<List<HubIdModel>?> fetchHubs();
 
-  Future<List<WidgetModel>?> addDevice(WidgetModel widgetModel);
+  Future<List<WidgetModel>?> addDevice(Map<String, dynamic> req);
 
   Future<List<ModuleModel>?> fetchModuleList(int objectId);
 

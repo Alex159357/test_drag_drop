@@ -56,16 +56,7 @@ class MainRepoImpl implements MainRepo {
   }
 
   @override
-  Future<List<WidgetModel>?> addDevice(WidgetModel widgetModel) async {
-    Map<String, dynamic> req = widgetModel.toJson();
-    // {"token": "99d10fe4-1b2e-4a75-87a3-aa6c2c2d08dd",
-    //   "name": widgetModel.name,
-    //   "module_id": "2040210906173815",
-    //   "hubid": "1020210708130621",
-    //   "panel_id": "2",
-    //   "parameter": "h",
-    //   "x": "0",
-    //   "y": "0"};
+  Future<List<WidgetModel>?> addDevice(Map<String, dynamic> req) async {
 
     Client client = ClientImpl<ActionResponse, void>("");
     try {

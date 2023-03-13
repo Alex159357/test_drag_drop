@@ -8,6 +8,7 @@ import 'package:test_drag_drop/helpers/states/widget_types.dart';
 import 'package:test_drag_drop/model/counter_model.dart';
 import 'package:test_drag_drop/model/module_id.dart';
 import 'package:test_drag_drop/model/switch_model.dart';
+import '../../home_screen.dart';
 import '../../model/climate_control_model.dart';
 import '../../model/climate_sensor_model.dart';
 import '../../model/widget_model.dart';
@@ -174,18 +175,10 @@ class DragBloc extends Bloc<DragEvent, DragState> {
     //     (element) => element.getTitle == state.addWidgetState.widgetType);
     int widgetId = -1;
     var rng = Random();
-    for (var i = 0; i < 10; i++) {
-      print(rng.nextInt(9999));
-    }
     Future.doWhile(() {
       widgetId = rng.nextInt(9999);
-      print("GeneratedId -> $widgetId");
       return false;
     });
-
-    // do{
-    //
-    // }while(_widgetList.firstWhereOrNull((element) => element.id == widgetId) == null);
 
     WidgetModel wmTmp = WidgetModel(
         id: widgetId,
@@ -194,51 +187,12 @@ class DragBloc extends Bloc<DragEvent, DragState> {
         moduleHubId: state.addWidgetState.selectedHub,
         dx: 0,
         dy: 0);
-
-    // switch (widgetTypes) {
-    //   case WidgetTypes.SWITCH:
-    //     wmTmp = SwitchModel(
-    //         id: _widgetList.length + 1,
-    //         name: state.addWidgetState.name,
-    //         dx: 100,
-    //         dy: 100,
-    //         moduleId: state.addWidgetState.selectedModule,
-    //         moduleName: "");
-    //     break;
-    //   case WidgetTypes.COUNTER:
-    //     wmTmp = CounterModel(
-    //         id: _widgetList.length + 1,
-    //         name: state.addWidgetState.name,
-    //         dx: 100,
-    //         dy: 100,
-    //         moduleId: state.addWidgetState.selectedModule,
-    //         moduleName: "");
-    //     break;
-    //   case WidgetTypes.CLIMATE_SENSOR:
-    //     wmTmp = ClimateSensorModel(
-    //         id: _widgetList.length + 1,
-    //         name: state.addWidgetState.name,
-    //         dx: 100,
-    //         dy: 100,
-    //         moduleId: state.addWidgetState.selectedModule,
-    //         moduleName: "");
-    //     break;
-    //   case WidgetTypes.CLIMATE_CONTROL_PANEL:
-    //     wmTmp = ClimateControlModel(
-    //         id: _widgetList.length + 1,
-    //         name: state.addWidgetState.name,
-    //         dx: 100,
-    //         dy: 100,
-    //         moduleId: state.addWidgetState.selectedModule,
-    //         moduleName: "");
-    //     break;
-    //   case WidgetTypes.UNDEFINED:
-    //     break;
-    // }
-    final response = await _mainRepoImpl.addDevice(wmTmp);
+    var req = wmTmp.toJson();
+    req.addAll({"panel_id": panelId, "parameter": state.addWidgetState.widgetType});
+    final response = await _mainRepoImpl.addDevice(req);
     if (response != null) {
       _widgetList.clear();
-      _widgetList.addAll(response!);
+      _widgetList.addAll(response);
       emit(state.clone(
           widgetList: _widgetList,
           addWidgetState: state.addWidgetState.clone(),

@@ -8,6 +8,7 @@ import 'package:test_drag_drop/model/module_id.dart';
 import '../../bloc/drag/drag_event.dart';
 import '../../bloc/drag/drag_state.dart';
 import '../../helpers/constaints.dart';
+import '../../helpers/states/device_types.dart';
 import '../../model/hub_id_model.dart';
 
 class AddWidgetView extends StatelessWidget {
@@ -52,7 +53,7 @@ class AddWidgetView extends StatelessWidget {
           ),
           _getNameField,
           const Divider(),
-          // _getTypeSelect,
+          _getTypeSelect,
           const Divider(),
           _getHubSelect,
           const Divider(),
@@ -93,10 +94,10 @@ class AddWidgetView extends StatelessWidget {
 
   Widget get _getTypeSelect => BlocBuilder<DragBloc, DragState>(
         builder: (BuildContext context, state) {
-          WidgetTypes widgetTypes = state.addWidgetState.widgetType.isNotEmpty
-              ? WidgetTypes.values.firstWhere((element) =>
-                  element.getTitle == state.addWidgetState.widgetType)
-              : WidgetTypes.UNDEFINED;
+          DeviceTypes widgetTypes = state.addWidgetState.widgetType.isNotEmpty
+              ? DeviceTypes.values.firstWhere((element) =>
+                  element.getKey == state.addWidgetState.widgetType)
+              : DeviceTypes.ANALOG_OUTPUT_1;
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -112,23 +113,23 @@ class AddWidgetView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4),
                       color: Colors.grey.withOpacity(.3)
                   ),
-                  child: DropdownButton<WidgetTypes>(
+                  child: DropdownButton<DeviceTypes>(
                     value: widgetTypes,
                     icon: const Icon(Icons.keyboard_arrow_down),
                     elevation: 16,
                     underline: Container(
                       color: Colors.transparent,
                     ),
-                    onChanged: (WidgetTypes? value) {
-                      bloc.add(OnTypeChanged(value!.getTitle));
+                    onChanged: (DeviceTypes? value) {
+                      bloc.add(OnTypeChanged(value!.getKey));
                     },
-                    items: WidgetTypes.values
-                        .map<DropdownMenuItem<WidgetTypes>>(
-                            (WidgetTypes value) {
-                      return DropdownMenuItem<WidgetTypes>(
+                    items: DeviceTypes.values
+                        .map<DropdownMenuItem<DeviceTypes>>(
+                            (DeviceTypes value) {
+                      return DropdownMenuItem<DeviceTypes>(
                         value: value,
                         child: Text(
-                          value.getTitle,
+                          value.getName,
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
                       );
