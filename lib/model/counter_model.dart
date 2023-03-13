@@ -3,58 +3,57 @@ import 'package:test_drag_drop/model/widget_model.dart';
 
 class CounterModel implements WidgetModel {
   @override
-  double dx;
+  int? id;
 
   @override
-  double dy;
+  String? moduleId;
 
   @override
-  int id;
+  String? moduleName;
 
   @override
-  String name;
+  String? name;
 
   @override
-  String tag;
+  String? time;
 
   @override
-  WidgetTypes type;
-
-  String value;
+  double? dx;
 
   @override
-  String? hubId;
+  double? dy;
 
-  @override
-  String? objectName;
 
-  @override
-  int? rssi;
+  CounterModel(
+      {this.id,
+      this.moduleId,
+      this.moduleName,
+      this.name,
+      this.time,
+      this.dx,
+      this.dy});
 
-  @override
-  bool? status;
+  CounterModel.fromJson(Map<String, dynamic> json) {
+    id = int.tryParse(json['id']);
+    moduleId = json['module_id'].toString();
+    name = json['name'];
+    dx = double.tryParse(json['x']);
+    dy = double.tryParse(json['y']);
+    moduleName = json['module_name'].toString();
+    time = json['time'];
+  }
 
-  @override
-  String? swver;
-
-  @override
-  double? vPower;
-
-  CounterModel({
-    required this.dx,
-    required this.dy,
-    required this.id,
-    required this.name,
-    required this.tag,
-    required this.type,
-    required this.value,
-    required this.vPower,
-    required this.swver,
-    required this.status,
-    required this.rssi,
-    required this.hubId,
-    required this.objectName,
-  });
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['module_id'] = moduleId;
+    data['name'] = name;
+    data['x'] = dx;
+    data['y'] = this.dy;
+    data['module_name'] = moduleName;
+    data['time'] = time;
+    return data;
+  }
 
   @override
   void changeCoordinates({required double dx, required double dy}) {
@@ -62,22 +61,7 @@ class CounterModel implements WidgetModel {
     this.dy = dy;
   }
 
-  factory CounterModel.fromMap(Map<String, dynamic> map) =>CounterModel(
-    id: int.parse(map["id"].toString()),
-    name: map["name"],
-    dx: 0,
-    dy: 0,
-    type: WidgetTypes.COUNTER,
-    tag: "",
-    objectName: map["object_name"],
-    vPower: double.tryParse(map["vpower"]),
-    swver: map["swver"],
-    status: false,
-    rssi: int.tryParse(map["rssi"]),
-    hubId: map["rssi"].toString(),
-    value: '',
-  );
-
   @override
-  WidgetModel fromMap(Map<String, dynamic> map) => CounterModel.fromMap(map);
+  String? moduleHubId;
+
 }

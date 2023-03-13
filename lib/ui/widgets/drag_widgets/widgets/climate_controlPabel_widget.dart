@@ -8,6 +8,7 @@ import '../../../../bloc/drag/drag_bloc.dart';
 import '../../../../bloc/drag/drag_event.dart';
 import '../../../../bloc/drag/drag_state.dart';
 import '../../../../model/climate_control_model.dart';
+import '../../../../model/module_id.dart';
 import '../../../../model/widget_model.dart';
 import 'expanded_widget.dart';
 
@@ -28,19 +29,19 @@ class ClimateControlPaneWidget extends StatelessWidget {
 
   Widget get _getDraggable => BlocBuilder<DragBloc, DragState>(
     builder: (BuildContext context, state) {
+      ModuleModel curModel = state.modelList.firstWhere((element) => element.id == wm.moduleId);
       return BlocBuilder<DragBloc, DragState>(
         builder: (BuildContext context, state) {
           return Draggable<int>(
             onDragEnd: (d) {
-              // bloc.add(OnWidgetPositionChanged(
-              //     dx: d.offset.dx, dy: d.offset.dy, id: switchModel.id));
+              bloc.add(OnWidgetMoved(id: wm.id!.toString(), dx: d.offset.dx, dy: d.offset.dy));
             },
             onDragUpdate: (d) {
               bloc.add(OnWidgetPositionChanged(
                   dx: d.localPosition.dx,
                   dy: d.localPosition.dy -
                       MediaQuery.of(context).viewPadding.top,
-                  id: wm.id));
+                  id: wm.id!));
               bloc.add(OnHoldStateChanged(true));
             },
             onDragStarted: () {},
@@ -90,12 +91,12 @@ class ClimateControlPaneWidget extends StatelessWidget {
                       child: InkWell(
                         onTap: () => bloc.add(
                             OnWidgetClickedDragEvent(
-                                clickedId: wm.id)),
+                                clickedId: wm.id!)),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
                             child: Text(
-                              wm.name,
+                              wm.name!,
                               style: TextStyle(color: Colors.white, fontSize: 12),
                             ),
                           ),
@@ -109,9 +110,9 @@ class ClimateControlPaneWidget extends StatelessWidget {
                       color: Colors.black12,
                       child: Column(
                         children: [
-                          Text(wm.name),
-                          Text(wm.tag),
-                          Text(wm.type.getTitle),
+                          Text(wm.name!),
+                          Text(wm.moduleName!),
+                          Text(WidgetType.fromId(wm.id!).getTitle),
                         ],
                       ),
                     )

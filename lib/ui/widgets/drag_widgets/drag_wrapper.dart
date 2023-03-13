@@ -20,6 +20,7 @@ class DragWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return AnimatedPositioned(
         curve: Curves.easeInToLinear,
         duration: const Duration(milliseconds: 0),
@@ -29,13 +30,13 @@ class DragWrapper extends StatelessWidget {
             // width: 70,
             // height: 70,
             child:
-                _getChild(widgetModel.type, widgetModel.dx, widgetModel.dy)));
+                _getChild(WidgetType.fromId(int.parse(widgetModel.moduleId!)), widgetModel.dx!, widgetModel.dy!)));
   }
 
   Widget _getChild(WidgetTypes type, double dx, double dy) {
     switch (type) {
       case WidgetTypes.SWITCH:
-        return SwitchWidget(switchModel: widgetModel as SwitchModel);
+        return SwitchWidget(wm: widgetModel as SwitchModel);
       case WidgetTypes.CLIMATE_CONTROL_PANEL:
         return ClimateControlPaneWidget(
           wm: widgetModel as ClimateControlModel,

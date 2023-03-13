@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:test_drag_drop/helpers/states/widget_types.dart';
+import 'package:test_drag_drop/model/module_id.dart';
 import 'package:test_drag_drop/ui/widgets/drag_widgets/widgets/expanded_widget.dart';
 
 import '../../../../bloc/drag/drag_bloc.dart';
@@ -9,6 +11,7 @@ import '../../../../bloc/drag/drag_event.dart';
 import '../../../../bloc/drag/drag_state.dart';
 import '../../../../model/counter_model.dart';
 import '../../../../model/widget_model.dart';
+import 'package:collection/collection.dart';
 
 class CounterWidget extends StatelessWidget {
   final CounterModel wm;
@@ -25,19 +28,19 @@ class CounterWidget extends StatelessWidget {
 
   Widget get _getDraggable => BlocBuilder<DragBloc, DragState>(
         builder: (BuildContext context, state) {
+          ModuleModel? curModel = state.modelList.firstWhereOrNull((element) => element.id == wm.moduleId);
           return BlocBuilder<DragBloc, DragState>(
             builder: (BuildContext context, state) {
               return Draggable<int>(
                 onDragEnd: (d) {
-                  // bloc.add(OnWidgetPositionChanged(
-                  //     dx: d.offset.dx, dy: d.offset.dy, id: switchModel.id));
+                  bloc.add(OnWidgetMoved(id: wm.id!.toString(), dx: d.offset.dx, dy: d.offset.dy));
                 },
                 onDragUpdate: (d) {
                   bloc.add(OnWidgetPositionChanged(
                       dx: d.localPosition.dx,
                       dy: d.localPosition.dy -
                           MediaQuery.of(context).viewPadding.top,
-                      id: wm.id));
+                      id: wm.id!));
                   bloc.add(OnHoldStateChanged(true));
                 },
                 onDragStarted: () {},
@@ -89,12 +92,12 @@ class CounterWidget extends StatelessWidget {
                                 child: InkWell(
                                   onTap: () => bloc.add(
                                       OnWidgetClickedDragEvent(
-                                          clickedId: wm.id)),
+                                          clickedId: wm.id!)),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Center(
                                       child: Text(
-                                        wm.value,
+                                        curModel!.vpower,
                                         style: TextStyle(color: Colors.white),
                                       ),
                                     ),
@@ -108,9 +111,9 @@ class CounterWidget extends StatelessWidget {
                                       color: Colors.black12,
                                       child: Column(
                                         children: [
-                                          Text(wm.name),
-                                          Text(wm.tag),
-                                          Text(wm.type.getTitle),
+                                          Text(wm.name!),
+                                          Text(wm.moduleName!),
+                                          Text(WidgetType.fromId(wm.id!).getTitle),
                                         ],
                                       ),
                                     )

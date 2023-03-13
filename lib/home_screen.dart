@@ -6,6 +6,11 @@ import 'bloc/drag/drag_bloc.dart';
 import 'bloc/drag/drag_event.dart';
 import 'drag_view.dart';
 
+
+String panelId = "2";
+String parameter = "h";
+String token ="99d10fe4-1b2e-4a75-87a3-aa6c2c2d08dd";
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 

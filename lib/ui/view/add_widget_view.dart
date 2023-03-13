@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:test_drag_drop/bloc/drag/drag_bloc.dart';
 import 'package:test_drag_drop/helpers/states/widget_types.dart';
 import 'package:collection/collection.dart';
+import 'package:test_drag_drop/model/module_id.dart';
 import '../../bloc/drag/drag_event.dart';
 import '../../bloc/drag/drag_state.dart';
 import '../../helpers/constaints.dart';
@@ -28,10 +30,11 @@ class AddWidgetView extends StatelessWidget {
               spreadRadius: 5.0)
         ],
       ),
-      width: 400,
-      height: 450,
+      width: 450,
+      height: 550,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -49,9 +52,11 @@ class AddWidgetView extends StatelessWidget {
           ),
           _getNameField,
           const Divider(),
-          _getTypeSelect,
+          // _getTypeSelect,
           const Divider(),
           _getHubSelect,
+          const Divider(),
+          _getModuleSelect,
           const Divider(),
           _getTagField,
           const Spacer(),
@@ -138,7 +143,7 @@ class AddWidgetView extends StatelessWidget {
 
   Widget get _getHubSelect => BlocBuilder<DragBloc, DragState>(
         builder: (BuildContext context, state) {
-          HubIdModel widgetTypes = state.hubList.firstWhereOrNull((element) => element.id == state.selectedHubModel) ?? state.hubList[0];
+          HubIdModel? selectedHub =  state.hubList.isNotEmpty? state.hubList.firstWhereOrNull((element) => element.id == state.addWidgetState.selectedHub) ?? state.hubList[0] : null;
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -155,14 +160,14 @@ class AddWidgetView extends StatelessWidget {
                       color: Colors.grey.withOpacity(.3)
                   ),
                   child: DropdownButton<HubIdModel>(
-                    value: widgetTypes,
+                    value: selectedHub,
                     icon: const Icon(Icons.keyboard_arrow_down),
                     elevation: 16,
                     underline: Container(
                       color: Colors.transparent,
                     ),
                     onChanged: (HubIdModel? value) {
-                      bloc.add(OnHubChanged(value!.id));
+                      bloc.add(OnHubChanged(value!.id!));
                     },
                     items: state.hubList
                         .map<DropdownMenuItem<HubIdModel>>(
@@ -170,7 +175,7 @@ class AddWidgetView extends StatelessWidget {
                       return DropdownMenuItem<HubIdModel>(
                         value: value,
                         child: Text(
-                          value.objectName,
+                          value.id!,
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
                       );
@@ -182,6 +187,64 @@ class AddWidgetView extends StatelessWidget {
           );
         },
       );
+
+  Widget get _getModuleSelect => BlocBuilder<DragBloc, DragState>(
+    builder: (BuildContext context, state) {
+      List<ModuleModel> moduleList = state.modelList.where((element) =>  element.hubId == state.addWidgetState.selectedHub && element.status).toList();
+      if(moduleList.isNotEmpty && state.addWidgetState.selectedHub.isNotEmpty) {
+        ModuleModel selectedModel = state.modelList.firstWhereOrNull((element) => element.id == state.addWidgetState.selectedModule) ?? state.modelList.first;
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                AddWidgetDialog.moduleSelect,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .titleSmall,
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: Colors.grey.withOpacity(.3)
+                ),
+                child: DropdownButton<ModuleModel>(
+                  value: selectedModel,
+                  icon: const Icon(Icons.keyboard_arrow_down),
+                  elevation: 16,
+                  underline: Container(
+                    color: Colors.transparent,
+                  ),
+                  onChanged: (ModuleModel? value) {
+                    bloc.add(OnModuleSelected(value!.id));
+                  },
+                  items: state.modelList
+                      .map<DropdownMenuItem<ModuleModel>>(
+                          (ModuleModel value) {
+                        return DropdownMenuItem<ModuleModel>(
+                          value: value,
+                          child: Text(
+                            value.name,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .titleSmall,
+                          ),
+                        );
+                      }).toList(),
+                ),
+              ),
+            ],
+          ),
+        );
+      }else{
+        return Container();
+      }
+    },
+  );
 
   Widget get _getButtonsBar => BlocBuilder<DragBloc, DragState>(
         builder: (BuildContext context, state) {
@@ -206,6 +269,8 @@ class AddWidgetView extends StatelessWidget {
           );
         },
       );
+  // 0800 210 800
+  // 2513
 
   Widget get _getTagField => BlocBuilder<DragBloc, DragState>(
         builder: (BuildContext context, state) {

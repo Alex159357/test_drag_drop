@@ -1,10 +1,12 @@
 import '../../model/hub_id_model.dart';
+import '../../model/module_id.dart';
 import '../../model/widget_model.dart';
 import 'add_widget_state.dart';
 
 class DragState {
   final List<WidgetModel> widgetList;
   final List<HubIdModel> hubList;
+  final List<ModuleModel> modelList;
   final int expandedId;
   final double initialWidth;
   final double initialHeight;
@@ -16,7 +18,6 @@ class DragState {
   final bool didItemOverRemoveTarget;
   final bool dialogState;
   final AddWidgetState addWidgetState;
-  final String selectedHubModel;
   final int hoverId;
   final String test;
 
@@ -34,7 +35,10 @@ class DragState {
       this.dialogState = false,
       this.addWidgetState = const AddWidgetState(),
       this.hoverId = -1,
-      this.test = "", this.hubList = const [], this.selectedHubModel = ""});
+      this.test = "",
+      this.hubList = const [],
+      this.modelList = const [],
+      });
 
   DragState init() {
     return DragState();
@@ -53,7 +57,11 @@ class DragState {
       bool? didUpdateScene,
       bool? dialogState,
       AddWidgetState? addWidgetState,
-      int? hoverId, String? test, List<HubIdModel>? hubList, String? selectedHubModel}) {
+      int? hoverId,
+      String? test,
+      List<HubIdModel>? hubList,
+      List<ModuleModel>? modelList,
+      }) {
     return DragState(
         widgetList: widgetList ?? this.widgetList,
         expandedId: expandedId ?? this.expandedId,
@@ -71,7 +79,7 @@ class DragState {
         hoverId: hoverId ?? this.hoverId,
         test: test ?? this.test,
         hubList: hubList ?? this.hubList,
-        selectedHubModel: selectedHubModel ?? this.selectedHubModel
-    );
+        modelList: modelList ?? this.modelList,
+        );
   }
 }

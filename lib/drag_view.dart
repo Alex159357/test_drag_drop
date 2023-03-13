@@ -88,17 +88,17 @@ class DragViewWidget extends BaseStateLess with AddWidgetDialog {
                               Row(
                                 children: [
                                   ElevatedButton(
-                                    child: Icon(Icons.zoom_in),
+                                    child: const Icon(Icons.zoom_in),
                                     onPressed: () => bloc.add(OnZoomIn()),
                                   ),
                                   ElevatedButton(
-                                    child: Icon(Icons.zoom_out),
+                                    child: const Icon(Icons.zoom_out),
                                     onPressed: () => bloc.add(OnZoomOut()),
                                   ),
                                 ],
                               ),
                               Container(
-                                margin: EdgeInsets.only(bottom: 100),
+                                margin: const EdgeInsets.only(bottom: 100),
                                 child: Stack(
                                   children: [
                                     WidgetSizeOffsetWrapper(
@@ -108,14 +108,15 @@ class DragViewWidget extends BaseStateLess with AddWidgetDialog {
                                               height: size.height));
                                         },
                                         child: Container(
-                                            color: Colors.red,
                                             child: Image.asset(
                                                 "assets/plan_1.png"))),
                                     _getDragTarget,
+
                                     for (WidgetModel wm in state.widgetList)
+                                      state.widgetList.isNotEmpty?
                                       DragWrapper(
                                         widgetModel: wm,
-                                      )
+                                      ): Container()
                                   ],
                                 ),
                               ),
@@ -123,7 +124,7 @@ class DragViewWidget extends BaseStateLess with AddWidgetDialog {
                                 bottom: 0,
                                 child: InkWell(
                                   onTap: () => bloc.add(AddDialogState()),
-                                  child: Icon(Icons.add),
+                                  child: const Icon(Icons.add),
                                 ),
                               ),
                             ],
@@ -167,10 +168,10 @@ class DragViewWidget extends BaseStateLess with AddWidgetDialog {
             bottom: 30,
             child: AnimatedOpacity(
               opacity: state.didItemOverRemoveTarget ? 0.4 : 1,
-              duration: Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 500),
               child: AnimatedScale(
                 scale: state.didItemOverRemoveTarget ? 1.5 : 1,
-                duration: Duration(milliseconds: 500),
+                duration: const Duration(milliseconds: 500),
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 500),
                   child: state.holdState
@@ -224,18 +225,18 @@ class DragViewWidget extends BaseStateLess with AddWidgetDialog {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('The item will be added to item list'),
+              const Text('The item will be added to item list'),
               TextFormField(
                 onChanged: (v) {
                   x = v;
                 },
-                decoration: InputDecoration(labelText: "X coordinates"),
+                decoration: const InputDecoration(labelText: "X coordinates"),
               ),
               TextFormField(
                 onChanged: (v) {
                   y = v;
                 },
-                decoration: InputDecoration(labelText: "y coordinates"),
+                decoration: const InputDecoration(labelText: "y coordinates"),
               ),
             ],
           ),

@@ -9,6 +9,7 @@ import 'package:test_drag_drop/model/widget_model.dart';
 
 import '../../../../bloc/drag/drag_event.dart';
 import '../../../../bloc/drag/drag_state.dart';
+import '../../../../model/module_id.dart';
 import '../../../../model/switch_model.dart';
 
 class ExpandedWidget extends StatelessWidget {
@@ -44,7 +45,7 @@ class ExpandedWidget extends StatelessWidget {
                                 bloc.add(OnWidgetClickedDragEvent()),
                             icon:
                                 const Icon(Icons.arrow_back_ios_new_outlined)),
-                        Text(widgetModel.name),
+                        Text(widgetModel.name!),
                       ],
                     ),
                     _getBody
@@ -191,6 +192,7 @@ class ExpandedWidget extends StatelessWidget {
 
   Widget get _getSwitchView => BlocBuilder<DragBloc, DragState>(
         builder: (BuildContext context, state) {
+          ModuleModel curModel = state.modelList.firstWhere((element) => element.id == widgetModel.moduleId);
           return Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,10 +209,10 @@ class ExpandedWidget extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: CupertinoSwitch(
                       trackColor: Colors.black12,
-                      value: widgetModel.status ?? false,
+                      value: curModel.status == "true" ?? false,
                       onChanged: (bool value) {
                         bloc.add(OnSwitchStateChanged(
-                            id: widgetModel.id, state: value));
+                            id: int.parse(curModel.id), state: value));
                         // context.read<DragBloc>().add(OnSwitchStateChanged(
                         //     id: widgetModel.id, state: value));
                       },

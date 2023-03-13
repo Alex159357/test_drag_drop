@@ -104,3 +104,17 @@ class OnHubChanged extends DragEvent{
 
   OnHubChanged(this.id);
 }
+
+class OnModuleSelected extends DragEvent{
+  final String moduleId;
+
+  OnModuleSelected(this.moduleId);
+}
+
+class OnWidgetMoved extends DragEvent{
+  final double dx;
+  final double dy;
+  final String id;
+
+  OnWidgetMoved({required this.dx, required this.dy, required this.id});
+}

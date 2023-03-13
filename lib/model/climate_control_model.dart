@@ -3,54 +3,57 @@ import 'package:test_drag_drop/model/widget_model.dart';
 
 class ClimateControlModel implements WidgetModel {
   @override
-  double dx;
+  int? id;
 
   @override
-  double dy;
+  String? moduleId;
 
   @override
-  int id;
+  String? moduleName;
 
   @override
-  String name;
+  String? name;
 
   @override
-  String tag;
+  String? time;
 
   @override
-  WidgetTypes type;
+  double? dx;
 
   @override
-  String? hubId;
+  double? dy;
 
-  @override
-  String? objectName;
-
-  @override
-  int? rssi;
-
-  @override
-  bool? status;
-
-  @override
-  String? swver;
-
-  @override
-  double? vPower;
 
   ClimateControlModel(
-      {required this.dx,
-      required this.dy,
-      required this.id,
-      required this.name,
-      required this.tag,
-      required this.type,
-      required this.objectName,
-      required this.hubId,
-      required this.rssi,
-      required this.status,
-      required this.swver,
-      required this.vPower});
+      {this.id,
+      this.moduleId,
+      this.moduleName,
+      this.name,
+      this.time,
+      this.dx,
+      this.dy});
+
+  ClimateControlModel.fromJson(Map<String, dynamic> json) {
+    id = int.tryParse(json['id']);
+    moduleId = json['module_id'];
+    name = json['name'];
+    dx = double.tryParse(json['x']);
+    dy = double.tryParse(json['y']);
+    moduleName = json['module_name'];
+    time = json['time'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['module_id'] = moduleId;
+    data['name'] = name;
+    data['x'] = dx.toString();
+    data['y'] = dy.toString();
+    data['module_name'] = moduleName;
+    data['time'] = time;
+    return data;
+  }
 
   @override
   void changeCoordinates({required double dx, required double dy}) {
@@ -58,21 +61,7 @@ class ClimateControlModel implements WidgetModel {
     this.dy = dy;
   }
 
-  factory ClimateControlModel.fromMap(Map<String, dynamic> map) =>ClimateControlModel(
-    id: int.parse(map["id"].toString()),
-    name: map["name"],
-    dx: 0,
-    dy: 0,
-    type: WidgetTypes.COUNTER,
-    tag: "",
-    objectName: map["object_name"],
-    vPower: double.tryParse(map["vpower"]),
-    swver: map["swver"],
-    status: false,
-    rssi: int.tryParse(map["rssi"]),
-    hubId: map["rssi"].toString(),
-  );
-
   @override
-  WidgetModel? fromMap(Map<String, dynamic> json) => null;
+  String? moduleHubId;
+
 }

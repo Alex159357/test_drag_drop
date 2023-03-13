@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:test_drag_drop/bloc/drag/drag_bloc.dart';
 import 'package:test_drag_drop/helpers/states/widget_types.dart';
 import 'package:test_drag_drop/model/widget_model.dart';
@@ -8,7 +9,8 @@ import 'package:test_drag_drop/model/widget_model.dart';
 import '../../../../bloc/drag/drag_event.dart';
 import '../../../../bloc/drag/drag_state.dart';
 import '../../../../model/climate_sensor_model.dart';
-import 'expanded_widget.dart';
+import '../../../../model/module_id.dart';
+import 'package:collection/collection.dart';
 
 class ClimateSensor extends StatelessWidget {
   final ClimateSensorModel wm;
@@ -25,19 +27,19 @@ class ClimateSensor extends StatelessWidget {
 
   Widget get _getDraggable => BlocBuilder<DragBloc, DragState>(
     builder: (BuildContext context, state) {
+      ModuleModel? curModel = state.modelList.firstWhereOrNull((element) => element.id == wm.moduleId);
       return BlocBuilder<DragBloc, DragState>(
         builder: (BuildContext context, state) {
           return Draggable<int>(
             onDragEnd: (d) {
-              // bloc.add(OnWidgetPositionChanged(
-              //     dx: d.offset.dx, dy: d.offset.dy, id: switchModel.id));
+              bloc.add(OnWidgetMoved(id: wm.id!.toString(), dx: d.offset.dx, dy: d.offset.dy));
             },
             onDragUpdate: (d) {
               bloc.add(OnWidgetPositionChanged(
                   dx: d.localPosition.dx,
                   dy: d.localPosition.dy -
                       MediaQuery.of(context).viewPadding.top,
-                  id: wm.id));
+                  id: wm.id!));
               bloc.add(OnHoldStateChanged(true));
             },
             onDragStarted: () {},
@@ -83,12 +85,12 @@ class ClimateSensor extends StatelessWidget {
                         color: const Color(0xFFff98ff)
                             .withOpacity(.8)),
                     child: InkWell(
-                      onTap: () => bloc.add(OnWidgetClickedDragEvent(clickedId: wm.id)),
+                      onTap: () => bloc.add(OnWidgetClickedDragEvent(clickedId: wm.id!)),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Center(
                           child: Text(
-                            wm.name,
+                            wm.name!,
                             style: const TextStyle(color: Colors.white, fontSize: 12),
                           ),
                         ),
@@ -102,9 +104,9 @@ class ClimateSensor extends StatelessWidget {
                     color: Colors.black12,
                     child: Column(
                       children: [
-                        Text(wm.name),
-                        Text(wm.tag),
-                        Text(wm.type.getTitle),
+                        Text(wm.name!),
+                        Text(wm.moduleName!),
+                        Text(WidgetType.fromId(wm.id!).getTitle),
                       ],
                     ),
                   )

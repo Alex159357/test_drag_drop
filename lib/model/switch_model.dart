@@ -5,58 +5,58 @@ import 'package:collection/collection.dart';
 
 class SwitchModel implements WidgetModel {
   @override
-  int id;
+  int? id;
 
   @override
-  String name;
+  String? moduleId;
 
   @override
-  double dx;
+  String? moduleName;
 
   @override
-  double dy;
+  String? name;
 
   @override
-  WidgetTypes type;
+  String? time;
 
   @override
-  String tag;
-
-  bool state;
+  double? dx;
 
   @override
-  String? hubId;
+  double? dy;
+
+
+  SwitchModel(
+      {this.id,
+      this.moduleId,
+      this.moduleName,
+      this.name,
+      this.time,
+      this.dx,
+      this.dy});
+
+  SwitchModel.fromJson(Map<String, dynamic> json) {
+    id = int.tryParse(json['id'].toString());
+    moduleId = json['module_id'].toString();
+    name = json['name'].toString();
+    dx = double.tryParse(json['x']);
+    dy = double.tryParse(json['y']);
+    moduleName = json['module_name'];
+    time = json['time'];
+  }
 
   @override
-  int? rssi;
-
-  @override
-  bool? status;
-
-  @override
-  String? swver;
-
-  @override
-  double? vPower;
-
-  @override
-  String? objectName;
-
-  SwitchModel({
-    required this.id,
-    required this.name,
-    required this.dx,
-    required this.dy,
-    required this.type,
-    required this.state,
-    required this.tag,
-    required this.objectName,
-    required this.vPower,
-    required this.swver,
-    required this.status,
-    required this.rssi,
-    required this.hubId,
-  });
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id.toString();
+    data['module_id'] = moduleId;
+    data['name'] = name;
+    data['x'] = dx.toString();
+    data['y'] = dy.toString();
+    data['module_name'] = moduleName;
+    data['time'] = time;
+    return data;
+  }
 
   @override
   void changeCoordinates({required double dx, required double dy}) {
@@ -64,31 +64,7 @@ class SwitchModel implements WidgetModel {
     this.dy = dy;
   }
 
-  // "id": "1",
-  // "object_name": "Advisor Demo",
-  // "hub_id": "1020210708130621",
-  // "name": "null",
-  // "status": "true",
-  // "rssi": "null",
-  // "vpower": "null",
-  // "swver": "null"
-
-  factory SwitchModel.fromMap(Map<String, dynamic> map) => SwitchModel(
-        id:  int.parse(map["id"].toString()),
-        name: map["name"],
-        dx: 0,
-        dy:  0,
-        type: WidgetTypes.SWITCH,
-        state: false,
-        tag:  "",
-        objectName: map["object_name"],
-        vPower: double.tryParse(map["vpower"]),
-        swver: map["swver"],
-        status: false,
-        rssi: int.tryParse(map["rssi"]),
-        hubId: map["rssi"].toString(),
-      );
-
   @override
-  WidgetModel? fromMap(Map<String, dynamic> json)=> SwitchModel.fromMap(json);
+  String? moduleHubId;
+
 }
