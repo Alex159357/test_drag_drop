@@ -27,7 +27,7 @@ class DragWrapper extends StatelessWidget {
         curve: Curves.easeInToLinear,
         duration: const Duration(milliseconds: 300),
         left: widgetModel.dx,
-        top: widgetModel.dy! - position.dy,
+        top: widgetModel.dy! > position.dy? widgetModel.dy! - position.dy : widgetModel.dy!,
         child: Container(
             // width: 70,
             // height: 70,

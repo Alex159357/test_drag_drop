@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../bloc/drag/drag_bloc.dart';
 import '../../../../bloc/drag/drag_event.dart';
 import '../../../../bloc/drag/drag_state.dart';
@@ -40,11 +41,12 @@ class SwitchWidget extends BaseStateLess {
           return Draggable<int>(
             key: gKey,
             onDragEnd: (d) {
-              bloc.add(OnWidgetMoved(id: wm.id!.toString(), dx: d.offset.dx, dy: d.offset.dy));
-              bloc.add(OnWidgetPositionChanged(
-                  dx: d.offset.dx,
-                  dy: d.offset.dy,
-                  id: wm.id!));
+              // bloc.add(OnWidgetMoved(id: wm.id!.toString(), dx: d.offset.dx, dy: d.offset.dy));
+              // bloc.add(OnWidgetPositionChanged(
+              //     dx: d.offset.dx,
+              //     dy: d.offset.dy,
+              //     id: wm.id!));
+              Fluttertoast.showToast(msg: "");
 
             },
             onDragUpdate: (d) {
@@ -58,7 +60,9 @@ class SwitchWidget extends BaseStateLess {
               //     id: wm.id!));
               // bloc.add(OnHoldStateChanged(true));
             },
-            onDragStarted: () {},
+            onDragStarted: () {
+              bloc.add(OnHoldStateChanged(true));
+            },
             onDragCompleted: () {},
             onDraggableCanceled: (d, v) {
               bloc.add(OnHoldStateChanged(false));

@@ -70,6 +70,7 @@ class DragBloc extends Bloc<DragEvent, DragState> {
 
   FutureOr<void> _onWidgetPositionChanged(
       OnWidgetPositionChanged event, Emitter<DragState> emit) async {
+    Fluttertoast.showToast(msg: "${event.id}");
     var indexOfMovedWidget = _widgetList.indexWhere((element) => element.id == event.id);
     var movedElement = _widgetList[indexOfMovedWidget];
     movedElement.changeCoordinates(dx: event.dx, dy: event.dy);

@@ -42,7 +42,9 @@ class CounterWidget extends StatelessWidget {
                       dy: d.offset.dy,
                       id: wm.id!));
                 },
-                onDragStarted: () {},
+                onDragStarted: () {
+                  bloc.add(OnHoldStateChanged(true));
+                },
                 onDragCompleted: () {},
                 onDraggableCanceled: (d, v) {
                   bloc.add(OnHoldStateChanged(false));
