@@ -9,6 +9,7 @@ import 'package:test_drag_drop/ui/widgets/drag_widgets/widgets/expanded_widget.d
 import '../../../../bloc/drag/drag_bloc.dart';
 import '../../../../bloc/drag/drag_event.dart';
 import '../../../../bloc/drag/drag_state.dart';
+import '../../../../drag_view.dart';
 import '../../../../model/counter_model.dart';
 import '../../../../model/widget_model.dart';
 import 'package:collection/collection.dart';
@@ -33,15 +34,13 @@ class CounterWidget extends StatelessWidget {
             builder: (BuildContext context, state) {
               return Draggable<int>(
                 onDragEnd: (d) {
-                  bloc.add(OnWidgetMoved(id: wm.id!.toString(), dx: d.offset.dx, dy: d.offset.dy));
-                },
-                onDragUpdate: (d) {
+                  RenderBox renderBox = dragKey.currentContext!.findRenderObject() as RenderBox;
+                  Offset position = renderBox.localToGlobal(Offset.zero);
+                  bloc.add(OnWidgetMoved(id: wm.id!.toString(), dx: d.offset.dx, dy: d.offset.dy-position.dy));
                   bloc.add(OnWidgetPositionChanged(
-                      dx: d.localPosition.dx,
-                      dy: d.localPosition.dy -
-                          MediaQuery.of(context).viewPadding.top,
+                      dx: d.offset.dx,
+                      dy: d.offset.dy - position.dy,
                       id: wm.id!));
-                  bloc.add(OnHoldStateChanged(true));
                 },
                 onDragStarted: () {},
                 onDragCompleted: () {},
@@ -49,82 +48,36 @@ class CounterWidget extends StatelessWidget {
                   bloc.add(OnHoldStateChanged(false));
                 },
                 data: wm.id,
-                feedback: AnimatedOpacity(
-                  duration: Duration(milliseconds: 500),
-                  opacity: state.didItemOverRemoveTarget ? 0.4 : 1,
-                  child:
-                  // state.expandedId == wm.id
-                  //     ? ExpandedWidget(widgetModel: wm, bloc: bloc,)
-                  //     :
-                  SizedBox(
-                          width: widgetSize,
-                          height: widgetSize,
-                          child: const Material(
-                            color: Colors.transparent,
-                          ),
-                        ),
-                ),
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 500),
-                  child: state.expandedId == wm.id
-                      ? Column(
-                          children: [
-                            // ExpandedWidget(widgetModel: wm, bloc: bloc,),
-                          ],
-                        )
-                      : MouseRegion(
-                          onHover: (b) {
-                            // if(!state.holdState) {
-                            //   bloc.add(OnHoverWidget(switchModel.id));
-                            // }
-                          },
-                          child: Column(
-                            children: [
-                              Container(
-                                width: widgetSize,
-                                height: widgetSize,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: Colors.white, width: 2),
-                                    color: const Color(0xFFa8ff97)
-                                        .withOpacity(.8)),
-                                child: InkWell(
-                                  onTap: () => bloc.add(
-                                      OnWidgetClickedDragEvent(
-                                          clickedId: wm.id!)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Center(
-                                      child: Text(
-                                        curModel!.vpower,
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              state.hoverId == wm.id
-                                  ? Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 8, horizontal: 16),
-                                      color: Colors.black12,
-                                      child: Column(
-                                        children: [
-                                          Text(wm.name!),
-                                          Text(wm.moduleName!),
-                                          Text(WidgetType.fromId(wm.id!).getTitle),
-                                        ],
-                                      ),
-                                    )
-                                  : Container()
-                            ],
-                          ),
-                        ),
-                ),
+                feedback: _getContent(curModel),
+                child: InkWell(
+                  onTap: () => bloc.add(
+                      OnWidgetClickedDragEvent(
+                          clickedId: wm.id!)),
+                  child: _getContent(curModel),),
               );
             },
           );
         },
       );
+
+  Widget _getContent(ModuleModel? curModel) => Container(
+    width: widgetSize,
+    height: widgetSize,
+    decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+            color: Colors.white, width: 2),
+        color: const Color(0xFFa8ff97)
+            .withOpacity(.8)),
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Center(
+        child: Text(
+          curModel!.vpower,
+          style: const TextStyle(color: Colors.white, fontSize: 14),
+        ),
+      ),
+    ),
+  );
+
 }

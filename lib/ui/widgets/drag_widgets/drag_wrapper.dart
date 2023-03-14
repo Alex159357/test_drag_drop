@@ -20,10 +20,9 @@ class DragWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return AnimatedPositioned(
         curve: Curves.easeInToLinear,
-        duration: const Duration(milliseconds: 0),
+        duration: const Duration(milliseconds: 300),
         left: widgetModel.dx,
         top: widgetModel.dy,
         child: Container(

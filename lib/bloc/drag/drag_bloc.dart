@@ -48,9 +48,9 @@ class DragBloc extends Bloc<DragEvent, DragState> {
   }
 
   void _init(InitEvent event, Emitter<DragState> emit) async {
+    var modules = await _mainRepoImpl.fetchModuleList(1);
     var response = await _mainRepoImpl.fetchWidgets();
     var habs = await _mainRepoImpl.fetchHubs();
-    var modules = await _mainRepoImpl.fetchModuleList(1);
     print("Moduled - ${modules}");
     _widgetList.clear();
     _widgetList.addAll(response as List<WidgetModel>);
@@ -61,12 +61,16 @@ class DragBloc extends Bloc<DragEvent, DragState> {
         modelList: modules));
   }
 
+  void _initWidgetAction(){
+    _widgetList.map((e){
+      var curModule = state.modelList.firstWhereIndexedOrNull((index, element) => element.id == e.moduleId);
+
+    });
+  }
+
   FutureOr<void> _onWidgetPositionChanged(
       OnWidgetPositionChanged event, Emitter<DragState> emit) async {
-    // _widgetList[_widgetList.indexWhere((element) => element.id == event.id)]
-    //     .changeCoordinates(dx: event.dx, dy: event.dy);
-    var indexOfMovedWidget =
-        _widgetList.indexWhere((element) => element.id == event.id);
+    var indexOfMovedWidget = _widgetList.indexWhere((element) => element.id == event.id);
     var movedElement = _widgetList[indexOfMovedWidget];
     movedElement.changeCoordinates(dx: event.dx, dy: event.dy);
     _widgetList.removeAt(indexOfMovedWidget);
@@ -112,10 +116,10 @@ class DragBloc extends Bloc<DragEvent, DragState> {
       }
       _widgetList.add(element);
     });
-    emit(state.clone(
-        initialWidth: event.width,
-        initialHeight: event.height,
-        widgetList: _widgetList));
+    // emit(state.clone(
+    //     initialWidth: event.width,
+    //     initialHeight: event.height,
+    //     widgetList: _widgetList));
   }
 
   FutureOr<void> _onHoldStateChanged(
@@ -129,7 +133,7 @@ class DragBloc extends Bloc<DragEvent, DragState> {
     emit(state.clone(widgetList: _widgetList, holdState: false));
      _widgetList.clear();
      _widgetList.addAll(response as List<WidgetModel>);
-     emit(state.clone(widgetList: _widgetList, holdState: false));
+     emit(state.clone(widgetList: _widgetList, holdState: false, didItemOverRemoveTarget: false));
   }
 
   FutureOr<void> _onOvertargetStateChange(
@@ -217,17 +221,20 @@ class DragBloc extends Bloc<DragEvent, DragState> {
 
   FutureOr<void> _onSwitchStateChanged(
       OnSwitchStateChanged event, Emitter<DragState> emit) {
-    ModuleModel? sm;
-    state.modelList.forEach((element) {
-      if (element.id == event.id) {
-        sm!.status = event.state;
-      }
-    });
-    if (sm != null) {
-      _mainRepoImpl.passAction(
-          hubid: sm!.hubId!, id: sm!.id, state: event.state);
+    // state.modelList.forEach((element) {
+    //   if (element.id == event.id) {
+    //     sm!.status = event.state;
+    //   }
+    // });
+    // if (sm != null) {
+    WidgetModel? wm = _widgetList.firstWhereIndexedOrNull((index, element) => element.id == event.id);
+    if(wm != null){
+      ModuleModel? sm = state.modelList.firstWhereIndexedOrNull((index, element) => element.id == wm.moduleId);
+      _mainRepoImpl.passAction(hubid: sm!.hubId!, id: sm!.id, state: event.state);
     }
-    emit(state.clone(widgetList: _widgetList));
+
+    // }
+    // emit(state.clone(widgetList: _widgetList));
   }
 
   FutureOr<void> _onHover(OnHoverWidget event, Emitter<DragState> emit) {
@@ -246,9 +253,15 @@ class DragBloc extends Bloc<DragEvent, DragState> {
             state.addWidgetState.clone(selectedModule: event.moduleId)));
   }
 
-  FutureOr<void> _onWidgetMoved(OnWidgetMoved event, Emitter<DragState> emit) {
+  FutureOr<void> _onWidgetMoved(OnWidgetMoved event, Emitter<DragState> emit) async {
     WidgetModel? wmTmp = _widgetList
         .firstWhereOrNull((element) => element.id.toString() == event.id);
-    _mainRepoImpl.widgetMoved(wmTmp!);
+    await _mainRepoImpl.widgetMoved(wmTmp!);
+    // var response = await _mainRepoImpl.fetchWidgets();
+    // _widgetList.clear();
+    // _widgetList.addAll(response as List<WidgetModel>);
+    // emit(state.clone(
+    //     addWidgetState: state.addWidgetState.clone(),
+    //     widgetList: _widgetList,));
   }
 }

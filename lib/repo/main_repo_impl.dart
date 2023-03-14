@@ -31,7 +31,6 @@ class MainRepoImpl implements MainRepo {
     final outState = state ? 1 : 0;
     var req = {
       "hubid": "$hubid",
-      // "token": "99d10fe4-1b2e-4a75-87a3-aa6c2c2d08dd",
       "value":
           "{\"action\":\"setManual\",\"data\":{\"idOut\":\"$id\",\"paramOut\":\"DO3\",\"setValue\":\"$outState\"}}"
     };
@@ -98,8 +97,6 @@ class MainRepoImpl implements MainRepo {
       "x": widgetModel.dx.toString(),
       "y": widgetModel.dy.toString()
     }; //widgetModel.toJson();
-    // req.addAll({"panel_id": panelId});
-    Fluttertoast.showToast(msg: "${req["x"].runtimeType}");
     try {
       ActionResponse actionResponse = await client.callPost(
           data: req, apiValues: ApiValues.ON_WIDGEET_POSITION_CHANGED);

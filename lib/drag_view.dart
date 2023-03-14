@@ -14,6 +14,9 @@ import 'bloc/drag/drag_event.dart';
 import 'helpers/constaints.dart';
 import 'model/widget_model.dart';
 
+
+GlobalKey dragKey = GlobalKey();
+
 class DragViewWidget extends BaseStateLess with AddWidgetDialog {
   late DragBloc bloc;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -98,7 +101,7 @@ class DragViewWidget extends BaseStateLess with AddWidgetDialog {
                                 ],
                               ),
                               Container(
-                                margin: const EdgeInsets.only(bottom: 100),
+                                key: dragKey,
                                 child: Stack(
                                   children: [
                                     WidgetSizeOffsetWrapper(
@@ -168,14 +171,16 @@ class DragViewWidget extends BaseStateLess with AddWidgetDialog {
             bottom: 30,
             child: AnimatedOpacity(
               opacity: state.didItemOverRemoveTarget ? 0.4 : 1,
-              duration: const Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 1000),
               child: AnimatedScale(
-                scale: state.didItemOverRemoveTarget ? 1.5 : 1,
+                scale: state.holdState? 1 : !state.holdState? 0 : state.didItemOverRemoveTarget ? 1.5 : 1,
                 duration: const Duration(milliseconds: 500),
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 500),
-                  child: state.holdState
-                      ? DragTarget<int>(
+                  child:
+                  // state.holdState
+                  //     ?
+                  DragTarget<int>(
                           onMove: (d) {
                             bloc.add(OnItemOverDeleteTargetStateChange(true));
                           },
@@ -205,7 +210,7 @@ class DragViewWidget extends BaseStateLess with AddWidgetDialog {
                             bloc.add(OnRemoveReq(data.data));
                           },
                         )
-                      : Container(),
+                      // : Container(),
                 ),
               ),
             ),

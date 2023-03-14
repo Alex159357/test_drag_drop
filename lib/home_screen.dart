@@ -10,7 +10,6 @@ import 'drag_view.dart';
 String panelId = "2";
 String parameter = "h";
 String token ="99d10fe4-1b2e-4a75-87a3-aa6c2c2d08dd";
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -155,7 +154,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildPage(BuildContext context) {
     DragBloc bloc = context.read<DragBloc>();
     return Scaffold(
-        body: DragViewWidget());
+        body: Container(
+          margin: EdgeInsets.only(top: 150),
+            child: DragViewWidget()));
   }
 
 
