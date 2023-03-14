@@ -70,7 +70,6 @@ class DragBloc extends Bloc<DragEvent, DragState> {
 
   FutureOr<void> _onWidgetPositionChanged(
       OnWidgetPositionChanged event, Emitter<DragState> emit) async {
-    Fluttertoast.showToast(msg: "${event.id}");
     var indexOfMovedWidget = _widgetList.indexWhere((element) => element.id == event.id);
     var movedElement = _widgetList[indexOfMovedWidget];
     movedElement.changeCoordinates(dx: event.dx, dy: event.dy);
@@ -258,6 +257,7 @@ class DragBloc extends Bloc<DragEvent, DragState> {
     WidgetModel? wmTmp = _widgetList
         .firstWhereOrNull((element) => element.id.toString() == event.id);
     await _mainRepoImpl.widgetMoved(wmTmp!);
+    Fluttertoast.showToast(msg: "${event.dx} / ${event.dy}");
     // var response = await _mainRepoImpl.fetchWidgets();
     // _widgetList.clear();
     // _widgetList.addAll(response as List<WidgetModel>);

@@ -29,30 +29,26 @@ class ClimateSensor extends StatelessWidget {
   Widget get _getDraggable => BlocBuilder<DragBloc, DragState>(
     builder: (BuildContext context, state) {
       ModuleModel? curModel = state.modelList.firstWhereOrNull((element) => element.id == wm.moduleId);
-      return BlocBuilder<DragBloc, DragState>(
-        builder: (BuildContext context, state) {
-          return Draggable<int>(
-            onDragEnd: (d) {
-              bloc.add(OnWidgetMoved(id: wm.id!.toString(), dx: d.offset.dx, dy: d.offset.dy));
-              bloc.add(OnWidgetPositionChanged(
-                  dx: d.offset.dx,
-                  dy: d.offset.dy,
-                  id: wm.id!));
-            },
-            onDragStarted: () {
-              bloc.add(OnHoldStateChanged(true));
-            },
-            onDragCompleted: () {},
-            onDraggableCanceled: (d, v) {
-              bloc.add(OnHoldStateChanged(false));
-            },
-            data: wm.id,
-            feedback: _getContent(curModel),
-            child: InkWell(
-                onTap: () => bloc.add(OnWidgetClickedDragEvent(clickedId: wm.id!)),
-                child: _getContent(curModel))
-          );
+      return Draggable<int>(
+        onDragEnd: (d) {
+          bloc.add(OnWidgetMoved(id: wm.id!.toString(), dx: d.offset.dx, dy: d.offset.dy));
+          bloc.add(OnWidgetPositionChanged(
+              dx: d.offset.dx,
+              dy: d.offset.dy,
+              id: wm.id!));
         },
+        onDragStarted: () {
+          bloc.add(OnHoldStateChanged(true));
+        },
+        onDragCompleted: () {},
+        onDraggableCanceled: (d, v) {
+          bloc.add(OnHoldStateChanged(false));
+        },
+        data: wm.id,
+        feedback: _getContent(curModel),
+        child: InkWell(
+            onTap: () => bloc.add(OnWidgetClickedDragEvent(clickedId: wm.id!)),
+            child: _getContent(curModel))
       );
     },
   );

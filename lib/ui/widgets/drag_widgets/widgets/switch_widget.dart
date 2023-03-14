@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../bloc/drag/drag_bloc.dart';
 import '../../../../bloc/drag/drag_event.dart';
 import '../../../../bloc/drag/drag_state.dart';
@@ -39,15 +38,12 @@ class SwitchWidget extends BaseStateLess {
         builder: (BuildContext context, state) {
           ModuleModel? curModel = state.modelList.firstWhereOrNull((element) => element.id == wm.moduleId);
           return Draggable<int>(
-            key: gKey,
             onDragEnd: (d) {
-              // bloc.add(OnWidgetMoved(id: wm.id!.toString(), dx: d.offset.dx, dy: d.offset.dy));
-              // bloc.add(OnWidgetPositionChanged(
-              //     dx: d.offset.dx,
-              //     dy: d.offset.dy,
-              //     id: wm.id!));
-              Fluttertoast.showToast(msg: "");
-
+              bloc.add(OnWidgetMoved(id: wm.id!.toString(), dx: d.offset.dx, dy: d.offset.dy));
+              bloc.add(OnWidgetPositionChanged(
+                  dx: d.offset.dx,
+                  dy: d.offset.dy,
+                  id: wm.id!));
             },
             onDragUpdate: (d) {
               // RenderBox renderBox = context.findRenderObject() as RenderBox;
