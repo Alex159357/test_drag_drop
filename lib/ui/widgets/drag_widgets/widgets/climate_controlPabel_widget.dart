@@ -35,12 +35,10 @@ class ClimateControlPaneWidget extends StatelessWidget {
         builder: (BuildContext context, state) {
           return Draggable<int>(
             onDragEnd: (d) {
-              RenderBox renderBox = dragKey.currentContext!.findRenderObject() as RenderBox;
-              Offset position = renderBox.localToGlobal(Offset.zero);
-              bloc.add(OnWidgetMoved(id: wm.id!.toString(), dx: d.offset.dx, dy: d.offset.dy-position.dy));
+              bloc.add(OnWidgetMoved(id: wm.id!.toString(), dx: d.offset.dx, dy: d.offset.dy));
               bloc.add(OnWidgetPositionChanged(
                   dx: d.offset.dx,
-                  dy: d.offset.dy - position.dy,
+                  dy: d.offset.dy,
                   id: wm.id!));
             },
             onDragStarted: () {},

@@ -10,6 +10,7 @@ import 'package:test_drag_drop/ui/widgets/drag_widgets/widgets/switch_widget.dar
 import 'package:test_drag_drop/ui/widgets/drag_widgets/widgets/climate_sensor_widget.dart';
 import 'package:test_drag_drop/ui/widgets/drag_widgets/widgets/climate_controlPabel_widget.dart';
 
+import '../../../drag_view.dart';
 import '../../../helpers/states/widget_types.dart';
 import '../../../model/counter_model.dart';
 
@@ -20,11 +21,13 @@ class DragWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    RenderBox renderBox = dragKey.currentContext!.findRenderObject() as RenderBox;
+    Offset position = renderBox.localToGlobal(Offset.zero);
     return AnimatedPositioned(
         curve: Curves.easeInToLinear,
         duration: const Duration(milliseconds: 300),
         left: widgetModel.dx,
-        top: widgetModel.dy,
+        top: widgetModel.dy! - position.dy,
         child: Container(
             // width: 70,
             // height: 70,
